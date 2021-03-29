@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:khoaluantotnghiep2021/bindings/main_binding.dart';
+import 'package:khoaluantotnghiep2021/resources/strings/localization_service.dart';
+import 'package:khoaluantotnghiep2021/ui/home/home_page.dart';
+import 'package:khoaluantotnghiep2021/ui/theme/app_theme.dart';
 
-void main() {
-  runApp(Home());
-}
+import 'routes/app_pages.dart';
 
-class Home extends StatefulWidget {
-  @override
-  _HomeState createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Demo"),
-        elevation: 0.5,
-      ),
-      body: Center(
-        child: Text("Khóa luận tốt nghiệp"),
+void main() => runApp(
+      GetMaterialApp(
+        initialBinding: MainBinding(),
+        initialRoute: Routes.INITIAL,
+        theme: appThemeData,
+        getPages: AppPages.pages,
+        home: HomePage(),
+        translations: LocalizationService(),
+        locale: LocalizationService.locale,
+        fallbackLocale: LocalizationService.fallbackLocale,
+        defaultTransition: Transition.cupertino,
+        transitionDuration: Get.defaultTransitionDuration,
+        debugShowCheckedModeBanner: false,
       ),
     );
-  }
-}
+
