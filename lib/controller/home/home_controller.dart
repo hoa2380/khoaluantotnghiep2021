@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:khoaluantotnghiep2021/services/navigation_service.dart';
 
 class HomeController extends GetxController {
-  final pageCotroller = PageController();
+  final pageController = PageController();
   final animationDuration = const Duration(milliseconds: 350);
   List<BubbleBottomBarItem> navigationItems;
 
@@ -22,14 +22,8 @@ class HomeController extends GetxController {
 
   @override
   void onClose() {
-    pageCotroller.dispose();
+    pageController.dispose();
     Get.delete();
     super.onClose();
   }
-
-  var count = 0.obs;
-
-  increment() => count++;
-
-  resetCount() => count.value = 0;
 }

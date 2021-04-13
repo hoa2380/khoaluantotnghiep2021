@@ -25,4 +25,5 @@ class FoodTabController extends GetxController with SingleGetTickerProviderMixin
     Get.delete();
     super.onClose();
   }
+
 }
