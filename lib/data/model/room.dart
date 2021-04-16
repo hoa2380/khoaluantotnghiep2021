@@ -77,6 +77,6 @@ class Data {
 
   @override
   String toString() {
-    return 'Data{id: $id, roomName: $roomName, label: $label, isActive: $isActive, isOpenning: $isOpenning, customerName: $customerName, distrupTime: $distrupTime, disturbDate: $disturbDate, disturbSession: $disturbSession}';
+    return 'Room Info: {id: $id, roomName: $roomName, label: $label, isActive: $isActive, isOpenning: $isOpenning, customerName: $customerName, distrupTime: $distrupTime, disturbDate: $disturbDate, disturbSession: $disturbSession}';
   }
 }

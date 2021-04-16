@@ -2,6 +2,7 @@ class AppEndpoint {
   AppEndpoint._();
 
   static const String BASE_URL = "http://app.dean.vn:9090/";
+  static const String BASE_URL_IMAGE = "http://app.dean.vn:9090/uploads/";
 
   static const int connectionTimeout = 1500;
   static const int receiveTimeout = 1500;
@@ -13,5 +14,8 @@ class AppEndpoint {
   static const int ERROR_SERVER = 500;
   static const int ERROR_DISCONNECT = -1;
 
-  static const String CHECKROOMEXIST = 'room/check_room_exist';
+  static const String CHECK_ROOM_EXIST = 'room/check_room_exist';
+  static const String LOGIN = 'users/login';
+  static const String LIST_FOOD = 'food/get_list_food';
+  static const String URL_TOUR = 'users/get_url_tourist';
 }

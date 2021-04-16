@@ -2,10 +2,11 @@ import 'package:badges/badges.dart';
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:khoaluantotnghiep2021/controller/home/food_service_controller.dart';
+import 'package:khoaluantotnghiep2021/controller/home/food_service/food_service_controller.dart';
 import 'package:khoaluantotnghiep2021/controller/home/home_controller.dart';
 import 'package:khoaluantotnghiep2021/ui/theme/app_colors.dart';
 
+import 'activity_service/activity_service.dart';
 import 'food_service/food_service.dart';
 
 class HomePage extends GetView<HomeController> {
@@ -51,38 +52,10 @@ class HomePage extends GetView<HomeController> {
                 physics: NeverScrollableScrollPhysics(),
                 children: [
                   FoodService(),
-                  Center(
-                    child: ElevatedButton(
-                      child: Text("Reset"),
-                      style:
-                          ElevatedButton.styleFrom(primary: Colors.deepPurple),
-                      onPressed: () {},
-                    ),
-                  ),
-                  Center(
-                    child: ElevatedButton(
-                      child: Text("Reset"),
-                      style:
-                          ElevatedButton.styleFrom(primary: Colors.deepPurple),
-                      onPressed: () {},
-                    ),
-                  ),
-                  Center(
-                    child: ElevatedButton(
-                      child: Text("Reset"),
-                      style:
-                          ElevatedButton.styleFrom(primary: Colors.deepPurple),
-                      onPressed: () {},
-                    ),
-                  ),
-                  Center(
-                    child: ElevatedButton(
-                      child: Text("Reset"),
-                      style:
-                          ElevatedButton.styleFrom(primary: Colors.deepPurple),
-                      onPressed: () {},
-                    ),
-                  ),
+                  Text("Ok"),
+                  ActivityService(),
+                  Text("Ok"),
+                  Text("Ok"),
                 ],
               ),
             ),
@@ -96,12 +69,12 @@ class HomePage extends GetView<HomeController> {
           elevation: 1.0,
           animationType: BadgeAnimationType.slide,
           position: BadgePosition.topEnd(top: -18, end: -14),
-          badgeContent: Obx(() => Text(
-            "${c.ordersNumber}",
+          badgeContent: Text(
+            "0",
             style: TextStyle(
                 fontSize: 15,
                 color: AppColors.iconColor),
-          ),),
+          ),
           child: Icon(
             Icons.shopping_cart,
             size: 30,
