@@ -4,15 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:khoaluantotnghiep2021/controller/home/food_service/food_service_controller.dart';
 import 'package:khoaluantotnghiep2021/controller/home/home_controller.dart';
+import 'package:khoaluantotnghiep2021/controller/login/login_controller.dart';
+import 'package:khoaluantotnghiep2021/ui/home/activity_service/activity_service.dart';
+import 'package:khoaluantotnghiep2021/ui/home/laundry_service/laundry_service.dart';
 import 'package:khoaluantotnghiep2021/ui/theme/app_colors.dart';
 
-import 'activity_service/activity_service.dart';
 import 'food_service/food_service.dart';
+import 'information_hotel/information_hotel.dart';
 
-class HomePage extends GetView<HomeController> {
-  FoodServiceController c = Get.find();
+class HomePage extends GetView<HomeController>{
   @override
   Widget build(BuildContext context) {
+    FoodServiceController c = Get.find();
+    LoginController l = Get.find();
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -22,21 +26,22 @@ class HomePage extends GetView<HomeController> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
+                  Obx(() => Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Room: 400",
+                      Text( 'Room: ' +
+                        l.textRoomName.text,
                         style: TextStyle(
-                            fontSize: 18, color: AppColors.primaryTextColor),
+                            fontSize: 20,
+                            color: AppColors.primaryTextColor),
                       ),
-                      Text(
-                        "GUES NAME: Kem",
+                      Text( 'GUEST NAME: ' +
+                        l.guestName.value,
                         style: TextStyle(
                             fontSize: 18, color: AppColors.primaryTextColor),
                       ),
                     ],
-                  ),
+                  )),
                   Text(
                     "History",
                     style: TextStyle(
@@ -52,10 +57,10 @@ class HomePage extends GetView<HomeController> {
                 physics: NeverScrollableScrollPhysics(),
                 children: [
                   FoodService(),
-                  Text("Ok"),
+                  LaundryService(),
                   ActivityService(),
                   Text("Ok"),
-                  Text("Ok"),
+                  InformationHotel(),
                 ],
               ),
             ),

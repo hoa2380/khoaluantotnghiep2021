@@ -1,75 +1,61 @@
-import 'dart:io';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:khoaluantotnghiep2021/controller/login/login_provider.dart';
 import 'package:khoaluantotnghiep2021/data/model/room.dart';
 import 'package:khoaluantotnghiep2021/data/model/user.dart';
 import 'package:khoaluantotnghiep2021/ui/home/home_page.dart';
 import 'package:khoaluantotnghiep2021/ui/theme/app_colors.dart';
-import 'package:khoaluantotnghiep2021/utils/app_clients.dart';
-import 'package:khoaluantotnghiep2021/utils/app_endpoint.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends GetxController {
   TextEditingController textRoomName, textLabel;
+  var isLoading = true.obs;
   String roomName, label = '';
-  String _urlCheckRoom = AppEndpoint.CHECK_ROOM_EXIST;
-  String _urlLogin = AppEndpoint.LOGIN;
-  Room room;
-  User user;
+  var guestName = ''.obs;
+  var room = Room().obs;
+  var user = User().obs;
 
-  checkRoomExist() async {
-    if(textRoomName.text.isNotEmpty && textLabel.text.isNotEmpty){
-      Map<String, String> data = {"roomName": '$roomName', "label": '$label'};
+  void checkRoomExist() async {
+    if (textRoomName.text.isNotEmpty && textLabel.text.isNotEmpty) {
       try {
-        final response = await AppClients().post(
-          _urlCheckRoom,
-          data: data,
-        );
-        if(response.statusCode == 200) {
-          room = Room.fromJson(response.data);
-          print(response.statusMessage);
-          print(room.success);
-          print(room.data);
-          if(room.success) {
-            sleep(Duration(milliseconds: 1));
-            login(label, roomName);
-          }
-        } else print('error');
-      } on DioError catch (e) {
-        sleep(Duration(milliseconds: 1));
-        showDialog();
-        print(e.error);
+        isLoading(true);
+        var roomData = await LoginProvider().checkRoomExistRequest(roomName, label);
+        if (room != null) {
+          room.value = roomData;
+          login(label, roomName);
+          guestName.value = room.value.data.customerName;
+          print(guestName);
+          print(room.value.success);
+          print(room.value.data);
+        }
       }
-    } else {
-      showDialog();
-    }
+      catch(e) {
+        showDialog();
+      }
+      finally {
+        isLoading(false);
+      }
+    } else showDialog();
   }
 
-  login(roomLabel, roomName) async {
-    Map<String, String> data = {
-      "username": '_room_' + '$roomLabel' + '_' + '$roomName' + '_',
-      "password": '111111'};
+  void login(roomLabel, roomName) async {
     try {
-      final response = await AppClients().post(
-        _urlLogin,
-        data: data,
-      );
-       user = User.fromJson(response.data);
-      if(user.success) {
-        Get.to(() => HomePage());
-        print('token: ' + user.data.token + '\n' + user.data.user.toString());
+      isLoading(true);
+      var userData = await LoginProvider().loginRequest(roomLabel, roomName);
+      if (user != null) {
+        user.value = userData;
+        print(user.value.data.user);
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString('user_token', user.data.token);
-      } else showDialog();
-    } on DioError catch (e) {
-      sleep(Duration(milliseconds: 1));
-      print(e.error);
+        prefs.setString('user_token', user.value.data.token);
+        Get.to(() => HomePage());
+      }
+    } finally {
+      isLoading(false);
     }
   }
 
-  showDialog(){
+  showDialog() {
     return Get.defaultDialog(
         title: "Login Failed",
         titleStyle: TextStyle(

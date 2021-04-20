@@ -1,60 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:khoaluantotnghiep2021/controller/home/food_service/food_service_controller.dart';
+import 'package:khoaluantotnghiep2021/controller/home/laundry_service/laundry_service_controller.dart';
 import 'package:khoaluantotnghiep2021/ui/theme/app_colors.dart';
 import 'package:khoaluantotnghiep2021/utils/app_endpoint.dart';
 
-class FoodService extends GetView<FoodServiceController> {
+class LaundryService extends GetView<LaundryServiceController> {
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-     if(controller.isLoading.value)
-       return Center(child: CircularProgressIndicator(),);
-     else
-       return Column(
-         children: [
-           Container(
-             padding: EdgeInsets.symmetric(horizontal: 8),
-             child: TabBar(
-               controller: controller.tabController,
-               tabs: controller.listTabs,
-               isScrollable: true,
-               unselectedLabelColor: AppColors.primaryTextColor,
-               labelStyle: TextStyle(fontSize: 18),
-               indicatorSize: TabBarIndicatorSize.tab,
-               indicator: BoxDecoration(
-                   gradient: LinearGradient(colors: [
-                     AppColors.primaryAccentColor,
-                     AppColors.primaryColor
-                   ]),
-                   borderRadius: BorderRadius.circular(50),
-                   color: Colors.redAccent),
-             ),
-           ),
-           Expanded(
-             child: Container(
-               child: TabBarView(
-                 controller: controller.tabController,
-                 children: List<Widget>.generate(controller.listTabs.length, (index) {
-                   return mustTry();
-                 }),
-               ),
-             ),
-           )
-         ],
-       );
-   });
+    return Column(
+      children: [
+        Expanded(
+            child : laundry()
+        )
+      ],
+    );
   }
 
-  Widget mustTry() {
+  Widget laundry() {
     return Obx(() {
       if (controller.isLoading.value)
         return Center(child: CircularProgressIndicator());
       else
         return GridView.builder(
             shrinkWrap: true,
-            itemCount: controller.foodList.length,
+            itemCount: controller.laundryList.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               childAspectRatio: 3 / 5,
               crossAxisCount: 2,
@@ -78,7 +48,7 @@ class FoodService extends GetView<FoodServiceController> {
                     Expanded(
                       child: Image.network(
                         '${AppEndpoint.BASE_URL_IMAGE}' +
-                            controller.foodList[index].imagePath,
+                            controller.laundryList[index].imagePath,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -93,12 +63,12 @@ class FoodService extends GetView<FoodServiceController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              controller.foodList[index].name,
+                              controller.laundryList[index].name,
                               style: TextStyle(
                                   color: Colors.black87, fontSize: 25),
                             ),
                             Text(
-                              controller.foodList[index].description,
+                              controller.laundryList[index].description,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -108,7 +78,7 @@ class FoodService extends GetView<FoodServiceController> {
                             ),
                             Text(
                               NumberFormat.decimalPattern()
-                                  .format(controller.foodList[index].pricing) +
+                                  .format(controller.laundryList[index].pricing) +
                                   "₫",
                               style: TextStyle(
                                   color: Colors.red[700], fontSize: 18),

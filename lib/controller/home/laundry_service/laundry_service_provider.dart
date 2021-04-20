@@ -1,16 +1,16 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:khoaluantotnghiep2021/data/model/urlTour.dart';
+import 'package:khoaluantotnghiep2021/data/model/laundry.dart';
 import 'package:khoaluantotnghiep2021/utils/app_clients.dart';
 import 'package:khoaluantotnghiep2021/utils/app_endpoint.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ActivityServiceProvider {
-  UrlTour urlTour;
+class LaundryServiceProvider {
+  Laundry laundry;
   String _token;
-  String _url = AppEndpoint.URL_TOUR;
+  String _url = AppEndpoint.LAUNDRY;
 
-  Future<UrlTourData> fetchUrlTourList() async {
+  Future<List<LaundryDatum>> fetchListLaundry() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _token = prefs.getString('user_token');
     try {
@@ -18,11 +18,10 @@ class ActivityServiceProvider {
           options: Options(
             headers: {HttpHeaders.authorizationHeader: 'Bearer $_token'},
           ));
-      urlTour = UrlTour.fromJson(response.data);
-      print(urlTour.urlTourData);
+      laundry = Laundry.fromJson(response.data);
     } on DioError catch (e) {
       print(e.error);
     }
-    return urlTour.urlTourData;
+    return laundry.data.data;
   }
 }
