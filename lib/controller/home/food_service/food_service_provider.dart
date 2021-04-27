@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -17,7 +18,6 @@ class FoodServiceProvider {
   Future<List<CategoryDatum>> fetchCategory() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _token = prefs.getString('user_token');
-
     try {
       final response = await AppClients().post(_urlListCategory,
           options: Options(
@@ -33,12 +33,17 @@ class FoodServiceProvider {
   Future<List<FoodDatum>> fetchListFood() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _token = prefs.getString('user_token');
+    var query = jsonEncode({
+      'where': {
+        'isActive': 1,
+      }
+    });
     try {
       final response = await AppClients().post(_urlListFood,
+          data: query,
           options: Options(
             headers: {HttpHeaders.authorizationHeader: 'Bearer $_token'},
-          ),
-      );
+          ));
       food = Food.fromJson(response.data);
     } on DioError catch (e) {
       print(e.error);

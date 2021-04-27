@@ -146,7 +146,7 @@ class LaundryServicePage extends GetView<LaundryServiceController> {
           return Container();
         else
           return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 40),
+            padding: const EdgeInsets.symmetric(vertical: 35, horizontal: 10),
             child: FloatingActionButton(
               onPressed: () => openCart(context),
               child: Badge(
@@ -156,11 +156,11 @@ class LaundryServicePage extends GetView<LaundryServiceController> {
                 position: BadgePosition.topEnd(top: -18, end: -14),
                 badgeContent: Text(
                   "${controller.totalCount}",
-                  style: TextStyle(fontSize: 15, color: AppColors.iconColor),
+                  style: TextStyle(fontSize: 18, color: AppColors.iconColor),
                 ),
                 child: Icon(
                   Icons.shopping_cart,
-                  size: 30,
+                  size: 35,
                   color: AppColors.iconColor,
                 ),
               ),
@@ -212,17 +212,17 @@ class LaundryServicePage extends GetView<LaundryServiceController> {
                           primary: true,
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
-                          itemCount: controller.cart.length,
+                          itemCount: controller.laundryCartItem.length,
                           itemBuilder: (context, index) {
                             return ListTile(
                               leading: Image.network(
                                 '${AppEndpoint.BASE_URL_IMAGE}' +
-                                    controller.cart[index].imagePath,
+                                    controller.laundryCartItem[index].imagePath,
                                 fit: BoxFit.cover,
                                 width: 70,
                               ),
                               title: Text(
-                                controller.cart[index].name,
+                                controller.laundryCartItem[index].name,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontSize: 20,
@@ -242,7 +242,7 @@ class LaundryServicePage extends GetView<LaundryServiceController> {
                                         )),
                                     TextSpan(
                                         text:
-                                        '${controller.cart[index].qty}',
+                                        '${controller.laundryCartItem[index].qty}',
                                         style: TextStyle(
                                           fontSize: 23,
                                           color: AppColors.primaryTextColor,
@@ -252,7 +252,7 @@ class LaundryServicePage extends GetView<LaundryServiceController> {
                               ),
                               trailing: Text(
                                 NumberFormat.decimalPattern().format(
-                                    controller.cart[index].pricing) +
+                                    controller.laundryCartItem[index].pricing) +
                                     "₫",
                                 style: TextStyle(
                                   fontSize: 20,
@@ -278,7 +278,9 @@ class LaundryServicePage extends GetView<LaundryServiceController> {
                             ),
                           ),
                           TextField(
+                            controller: controller.textNote,
                             autofocus: false,
+                            onChanged: (value) => controller.note = value,
                             style: TextStyle(
                                 fontSize: 20,
                                 color: AppColors.primaryTextColor),
@@ -311,7 +313,10 @@ class LaundryServicePage extends GetView<LaundryServiceController> {
                           primary: Colors.white,
                           backgroundColor: AppColors.primaryColor,
                         ),
-                        onPressed: () => signatureDialog(context),
+                        onPressed: () {
+                          Get.back();
+                          signatureDialog(context);
+                        },
                       ),
                     )
                   ],
@@ -319,7 +324,6 @@ class LaundryServicePage extends GetView<LaundryServiceController> {
               )
           );
         });
-
   }
 
   signatureDialog(BuildContext context) {
@@ -350,8 +354,8 @@ class LaundryServicePage extends GetView<LaundryServiceController> {
                                 key: controller.signatureGlobalKey,
                                 backgroundColor: Colors.white,
                                 strokeColor: controller.currentColor.value,
-                                minimumStrokeWidth: 3.0,
-                                maximumStrokeWidth: 4.0),
+                                minimumStrokeWidth: 2.0,
+                                maximumStrokeWidth: 3.0),
                             !controller.isClearVisible.value ? Align(
                               alignment: Alignment.bottomCenter,
                               child: GestureDetector(
@@ -426,7 +430,7 @@ class LaundryServicePage extends GetView<LaundryServiceController> {
                 Container(
                   height: height * 0.05,
                   child: TextButton(
-                    child: Text('Confirm'),
+                    child: Text('ORDER'),
                     style: TextButton.styleFrom(
                       textStyle: TextStyle(
                         fontSize: 18,
@@ -434,7 +438,10 @@ class LaundryServicePage extends GetView<LaundryServiceController> {
                       primary: Colors.white,
                       backgroundColor: AppColors.primaryColor,
                     ),
-                    onPressed: () => Get.back(),
+                    onPressed: () {
+                      controller.uploadImg();
+                      Get.back();
+                    },
                   ),
                 ),
               ],
@@ -443,5 +450,6 @@ class LaundryServicePage extends GetView<LaundryServiceController> {
     else
       Get.defaultDialog();
   }
+
 
 }

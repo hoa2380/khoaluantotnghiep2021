@@ -18,8 +18,6 @@ class LoginController extends GetxController {
   var guestName = ''.obs;
   var room = Room().obs;
   var user = User().obs;
-  StreamSubscription subscription;
-
 
   void checkRoomExist() async {
     if (textRoomName.text.isNotEmpty && textLabel.text.isNotEmpty) {
@@ -30,12 +28,13 @@ class LoginController extends GetxController {
           room.value = roomData;
           login(label, roomName);
           guestName.value = room.value.data.customerName;
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setInt('room_id', room.value.data.id);
           print(guestName);
           print(room.value.success);
           print(room.value.data);
         }
-      }
-      catch(e) {
+      } catch(e) {
         showDialog();
       }
       finally {
@@ -50,6 +49,7 @@ class LoginController extends GetxController {
       var userData = await LoginProvider().loginRequest(roomLabel, roomName);
       if (user != null) {
         user.value = userData;
+        print(user.value.data.user);
         print(user.value.data.user);
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('user_token', user.value.data.token);
@@ -98,7 +98,6 @@ class LoginController extends GetxController {
   void onClose() {
     textRoomName.dispose();
     textLabel.dispose();
-    subscription.cancel();
     super.onClose();
   }
 }
