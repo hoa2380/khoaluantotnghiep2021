@@ -21,4 +21,5 @@ class AppEndpoint {
   static const String LAUNDRY = 'laundry/get_list_laundry';
   static const String URL_TOUR = 'users/get_url_tourist';
   static const String INFOR = 'hotelinfoitem/get_list';
+  static const String CREATE_LAUNDRY_CART = 'room/create_laundry_cart';
 }

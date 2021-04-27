@@ -17,6 +17,7 @@ class FoodServiceProvider {
   Future<List<CategoryDatum>> fetchCategory() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _token = prefs.getString('user_token');
+
     try {
       final response = await AppClients().post(_urlListCategory,
           options: Options(

@@ -1,19 +1,17 @@
 import 'package:get/get.dart';
 
 class CartModel extends GetxController {
-  int id, cartId, price, foodId, number, status, currency;
-  String imgPath, name, decs, note;
-  var counter = 0.obs;
+  int id, roomId, promo, discount, totalMoney, currency, type, status;
+  String dateCreated;
 
-  CartModel({
-      this.id,
-      this.cartId,
-      this.price,
-      this.foodId,
-      this.number,
-      this.status,
-      this.currency,
-      this.imgPath,
-      this.name,
-      this.decs,});
+  CartModel(
+      {this.id,
+        this.roomId,
+        this.promo,
+        this.discount,
+        this.totalMoney,
+        this.currency,
+        this.type,
+        this.status,
+        this.dateCreated});
 }

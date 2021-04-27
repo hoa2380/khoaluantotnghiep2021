@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:khoaluantotnghiep2021/controller/login/login_controller.dart';
 import 'package:khoaluantotnghiep2021/ui/theme/app_colors.dart';
 
+// ignore: must_be_immutable
 class LoginPage extends GetView<LoginController> {
   double height, width;
   @override
@@ -15,7 +16,7 @@ class LoginPage extends GetView<LoginController> {
         builder: (_) {
           return Center(
             child: Container(
-              height: height * 0.55,
+              height: height * 0.60,
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               margin: EdgeInsets.symmetric(horizontal: 24),
               decoration: BoxDecoration(
@@ -38,7 +39,7 @@ class LoginPage extends GetView<LoginController> {
                   TextField(
                     controller: controller.textRoomName,
                     onChanged: (value) => controller.roomName = value,
-                    autofocus: false,
+                    autofocus: true,
                     style:
                     TextStyle(fontSize: 20, color: AppColors.primaryTextColor),
                     decoration: InputDecoration(
@@ -54,7 +55,7 @@ class LoginPage extends GetView<LoginController> {
                   TextField(
                     controller: controller.textLabel,
                     onChanged: (value) => controller.label = value,
-                    autofocus: false,
+                    autofocus: true,
                     style: TextStyle(
                         fontSize: 20, color: AppColors.primaryTextColor),
                     decoration: InputDecoration(
@@ -81,9 +82,11 @@ class LoginPage extends GetView<LoginController> {
                         primary: Colors.white,
                         backgroundColor: AppColors.primaryColor,
                       ),
-                      onPressed: () => controller.checkRoomExist(),
+                      onPressed: () {
+                          controller.checkRoomExist();
+                      },
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

@@ -1,60 +1,86 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
 import 'package:khoaluantotnghiep2021/controller/home/food_service/food_service_controller.dart';
+import 'package:khoaluantotnghiep2021/data/model/category.dart';
+import 'package:khoaluantotnghiep2021/data/model/food.dart';
 import 'package:khoaluantotnghiep2021/ui/theme/app_colors.dart';
 import 'package:khoaluantotnghiep2021/utils/app_endpoint.dart';
 
-class FoodService extends GetView<FoodServiceController> {
+class FoodServicePage extends GetView<FoodServiceController> {
+
+  final pageControllerCate = PageController(
+      initialPage: 0,
+      keepPage: true
+  );
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-     if(controller.isLoading.value)
-       return Center(child: CircularProgressIndicator(),);
-     else
-       return Column(
-         children: [
-           Container(
-             padding: EdgeInsets.symmetric(horizontal: 8),
-             child: TabBar(
-               controller: controller.tabController,
-               tabs: controller.listTabs,
-               isScrollable: true,
-               unselectedLabelColor: AppColors.primaryTextColor,
-               labelStyle: TextStyle(fontSize: 18),
-               indicatorSize: TabBarIndicatorSize.tab,
-               indicator: BoxDecoration(
-                   gradient: LinearGradient(colors: [
-                     AppColors.primaryAccentColor,
-                     AppColors.primaryColor
-                   ]),
-                   borderRadius: BorderRadius.circular(50),
-                   color: Colors.redAccent),
-             ),
-           ),
-           Expanded(
-             child: Container(
-               child: TabBarView(
-                 controller: controller.tabController,
-                 children: List<Widget>.generate(controller.listTabs.length, (index) {
-                   return mustTry();
-                 }),
-               ),
-             ),
-           )
-         ],
-       );
-   });
+      if (controller.isLoading.value)
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      else
+        return Column(
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              child: DefaultTabController(
+                length: controller.listTabs.length,
+                initialIndex: 0,
+                child: TabBar(
+                  overlayColor: MaterialStateProperty.all(Colors.transparent),
+                  controller: controller.tabController,
+                  tabs: controller.listTabs,
+                  isScrollable: true,
+                  onTap: (index){
+                    print(controller.listCategory[index].name);
+                  },
+                  unselectedLabelColor: AppColors.primaryTextColor,
+                  labelStyle: TextStyle(fontSize: 18),
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  indicator: BoxDecoration(
+                      gradient: LinearGradient(colors: [
+                        AppColors.primaryAccentColor,
+                        AppColors.primaryColor
+                      ]),
+                      borderRadius: BorderRadius.circular(50),
+                      color: Colors.redAccent),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                child: TabBarView(
+                  controller: controller.tabController,
+                  children: List<Widget>.generate(controller.listTabs.length,
+                          (index) {
+                        return itemList();
+                      }),
+                  // children: controller.listCategory.map((element){
+                  //   return itemList();
+                  // }).toList(),
+                ),
+              ),
+            )
+          ],
+        );
+    });
   }
 
-  Widget mustTry() {
+  Widget itemList() {
+    var foods = <FoodDatum>[].obs;
+    var foodByCat = controller.foodList
+        .where((element) => element.categoryId == 6).toList();
+    foods.assignAll(foodByCat);
     return Obx(() {
       if (controller.isLoading.value)
         return Center(child: CircularProgressIndicator());
       else
         return GridView.builder(
             shrinkWrap: true,
-            itemCount: controller.foodList.length,
+            itemCount: foodByCat.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               childAspectRatio: 3 / 5,
               crossAxisCount: 2,
@@ -76,10 +102,16 @@ class FoodService extends GetView<FoodServiceController> {
                 child: Column(
                   children: [
                     Expanded(
-                      child: Image.network(
-                        '${AppEndpoint.BASE_URL_IMAGE}' +
-                            controller.foodList[index].imagePath,
-                        fit: BoxFit.cover,
+                      child: Container(
+                        width: 200,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+                          child: Image.network(
+                            '${AppEndpoint.BASE_URL_IMAGE}' +
+                                foodByCat[index].imagePath,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -93,12 +125,12 @@ class FoodService extends GetView<FoodServiceController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              controller.foodList[index].name,
+                              foodByCat[index].name,
                               style: TextStyle(
                                   color: Colors.black87, fontSize: 25),
                             ),
                             Text(
-                              controller.foodList[index].description,
+                              foodByCat[index].description,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -107,8 +139,8 @@ class FoodService extends GetView<FoodServiceController> {
                                   fontSize: 18),
                             ),
                             Text(
-                              NumberFormat.decimalPattern()
-                                  .format(controller.foodList[index].pricing) +
+                              NumberFormat.decimalPattern().format(
+                                  foodByCat[index].pricing) +
                                   "₫",
                               style: TextStyle(
                                   color: Colors.red[700], fontSize: 18),

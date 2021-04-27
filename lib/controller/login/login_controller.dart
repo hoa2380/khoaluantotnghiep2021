@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,6 +9,7 @@ import 'package:khoaluantotnghiep2021/data/model/room.dart';
 import 'package:khoaluantotnghiep2021/data/model/user.dart';
 import 'package:khoaluantotnghiep2021/ui/home/home_page.dart';
 import 'package:khoaluantotnghiep2021/ui/theme/app_colors.dart';
+import 'package:connectivity/connectivity.dart';
 
 class LoginController extends GetxController {
   TextEditingController textRoomName, textLabel;
@@ -15,6 +18,8 @@ class LoginController extends GetxController {
   var guestName = ''.obs;
   var room = Room().obs;
   var user = User().obs;
+  StreamSubscription subscription;
+
 
   void checkRoomExist() async {
     if (textRoomName.text.isNotEmpty && textLabel.text.isNotEmpty) {
@@ -93,6 +98,7 @@ class LoginController extends GetxController {
   void onClose() {
     textRoomName.dispose();
     textLabel.dispose();
+    subscription.cancel();
     super.onClose();
   }
 }

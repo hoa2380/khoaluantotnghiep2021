@@ -36,7 +36,7 @@ class FoodServiceController extends GetxController with SingleGetTickerProviderM
       isLoading(true);
       var foods =  await FoodServiceProvider().fetchListFood();
       if(foodList != null){
-        foodList.assignAll(foods);
+        foodList.assignAll(foods.where((element) => element.isActive == 1 ));
         print(foodList);
       }
     } finally {

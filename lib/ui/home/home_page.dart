@@ -1,4 +1,3 @@
-import 'package:badges/badges.dart';
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,11 +5,12 @@ import 'package:khoaluantotnghiep2021/controller/home/food_service/food_service_
 import 'package:khoaluantotnghiep2021/controller/home/home_controller.dart';
 import 'package:khoaluantotnghiep2021/controller/login/login_controller.dart';
 import 'package:khoaluantotnghiep2021/ui/home/activity_service/activity_service.dart';
-import 'package:khoaluantotnghiep2021/ui/home/laundry_service/laundry_service.dart';
 import 'package:khoaluantotnghiep2021/ui/theme/app_colors.dart';
 
+import 'dont_disturb/dont_disturb.dart';
 import 'food_service/food_service.dart';
 import 'information_hotel/information_hotel.dart';
+import 'laundry_service/laundry_service.dart';
 
 class HomePage extends GetView<HomeController>{
   @override
@@ -56,10 +56,10 @@ class HomePage extends GetView<HomeController>{
                 controller: controller.pageController,
                 physics: NeverScrollableScrollPhysics(),
                 children: [
-                  FoodService(),
-                  LaundryService(),
-                  ActivityService(),
-                  Text("Ok"),
+                  FoodServicePage(),
+                  LaundryServicePage(),
+                  ActivityServicePage(),
+                  DontDisturb(),
                   InformationHotel(),
                 ],
               ),
@@ -67,26 +67,7 @@ class HomePage extends GetView<HomeController>{
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: openBottomSheet,
-        child: Badge(
-          animationDuration: Duration(milliseconds: 300),
-          elevation: 1.0,
-          animationType: BadgeAnimationType.slide,
-          position: BadgePosition.topEnd(top: -18, end: -14),
-          badgeContent: Text(
-            "0",
-            style: TextStyle(
-                fontSize: 15,
-                color: AppColors.iconColor),
-          ),
-          child: Icon(
-            Icons.shopping_cart,
-            size: 30,
-            color: AppColors.iconColor,
-          ),
-        ),
-      ),
+
       bottomNavigationBar: ValueBuilder<int>(
         initialValue: 0,
         builder: (value, updateFn) => Container(
@@ -96,8 +77,7 @@ class HomePage extends GetView<HomeController>{
             opacity: .2,
             currentIndex: value,
             onTap: (tab) {
-              controller.pageController.animateToPage(tab,
-                  duration: controller.animationDuration, curve: Curves.ease);
+              controller.pageController.jumpToPage(tab);
               updateFn(tab);
             },
             elevation: 8.0,

@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:get/get.dart';
 
 class Laundry {
   Laundry({
@@ -7,6 +10,10 @@ class Laundry {
 
   bool success;
   Data data;
+
+  factory Laundry.fromRawJson(String str) => Laundry.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
 
   factory Laundry.fromJson(Map<String, dynamic> json) => Laundry(
     success: json["success"],
@@ -32,6 +39,10 @@ class Data {
   int totalPage;
   int count;
 
+  factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     page: json["page"],
     data: List<LaundryDatum>.from(json["data"].map((x) => LaundryDatum.fromJson(x))),
@@ -47,7 +58,7 @@ class Data {
   };
 }
 
-class LaundryDatum {
+class LaundryDatum extends GetxController{
   LaundryDatum({
     this.id,
     this.name,
@@ -67,6 +78,11 @@ class LaundryDatum {
   int pricing;
   int currency;
   int isActive;
+  var qty = 0.obs;
+
+  factory LaundryDatum.fromRawJson(String str) => LaundryDatum.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
 
   factory LaundryDatum.fromJson(Map<String, dynamic> json) => LaundryDatum(
     id: json["id"],
@@ -92,6 +108,6 @@ class LaundryDatum {
 
   @override
   String toString() {
-    return 'Laundry{id: $id, name: $name, englishName: $englishName, description: $description, imagePath: $imagePath, pricing: $pricing, currency: $currency, isActive: $isActive}';
+    return 'Laundry: {id: $id, name: $name, englishName: $englishName, description: $description, imagePath: $imagePath, pricing: $pricing, currency: $currency, isActive: $isActive}';
   }
 }
