@@ -16,8 +16,10 @@ class LaundryServiceController extends GetxController with SingleGetTickerProvid
   var isLoading = true.obs;
   var isVisible = true.obs;
   var isClearVisible = true.obs;
+
   var laundryList = <LaundryDatum>[].obs;
   var laundryCartItem = <LaundryDatum>[].obs;
+
   var photo = Photo().obs;
   var cart = Cart().obs;
   var cartResult = CartResult().obs;
@@ -34,18 +36,19 @@ class LaundryServiceController extends GetxController with SingleGetTickerProvid
       var laundry =  await LaundryServiceProvider().fetchListLaundry();
       if(laundryList != null){
         laundryList.assignAll(laundry);
-        print(laundryList);
       }
     } finally {
       isLoading(false);
     }
   }
 
+  //action cart
   void addItem(laundry) {
     var index = laundryCartItem.indexWhere((element) => element.id == laundry.id);
     if(index != -1){
     } else {
       laundryCartItem.add(laundry);
+      print(laundryCartItem);
     }
     final ids = laundryCartItem.map((e) => e.id).toSet();
     laundryCartItem.retainWhere((x) => ids.remove(x.id));
@@ -66,7 +69,6 @@ class LaundryServiceController extends GetxController with SingleGetTickerProvid
     if(laundryList[i].qty > 0){
       laundryList[i].qty--;
       totalCount--;
-      print(laundryList[i].qty);
       if(laundryList[i].qty.value == 0) removeItem(laundryList[i].id);
     }
     if(totalCount <= 0) isVisible(true);
@@ -79,6 +81,7 @@ class LaundryServiceController extends GetxController with SingleGetTickerProvid
     });
   }
 
+  //signature
   void changeStrokeColor(Color color) => currentColor.value = color;
 
   void clearSign() {
@@ -147,33 +150,36 @@ class LaundryServiceController extends GetxController with SingleGetTickerProvid
             )
         );
         clearBooking();
-        print(cartResult.value);
+        print('Send success: ' + '${cartResult.value.success}');
       }
-      else Get.defaultDialog(
-          title: "Error!",
-          titleStyle: TextStyle(
-            color: AppColors.primaryTextColor,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-          content: Column(
-            children: [
-              Text("Cannot booking this time"),
-              SizedBox(height: 10),
-              TextButton(
-                child: Text('Okay'),
-                style: TextButton.styleFrom(
-                  textStyle: TextStyle(
-                    fontSize: 12,
+      else {
+        Get.defaultDialog(
+            title: "Error!",
+            titleStyle: TextStyle(
+              color: AppColors.primaryTextColor,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+            content: Column(
+              children: [
+                Text("Cannot booking this time"),
+                SizedBox(height: 10),
+                TextButton(
+                  child: Text('Okay'),
+                  style: TextButton.styleFrom(
+                    textStyle: TextStyle(
+                      fontSize: 12,
+                    ),
+                    primary: Colors.white,
+                    backgroundColor: AppColors.primaryColor,
                   ),
-                  primary: Colors.white,
-                  backgroundColor: AppColors.primaryColor,
+                  onPressed: () => Get.back(),
                 ),
-                onPressed: () => Get.back(),
-              ),
-            ],
-          )
-      );
+              ],
+            )
+        );
+        print('Send success: ' + '${cartResult.value.success}');
+      }
     } finally {
       isLoading(false);
     }
@@ -184,33 +190,6 @@ class LaundryServiceController extends GetxController with SingleGetTickerProvid
     laundryList.forEach((element) => element.qty.value = 0);
     totalCount.value = 0;
     isVisible(true);
-  }
-
-  showDialog() {
-    return Get.defaultDialog(
-        title: "Login Failed",
-        titleStyle: TextStyle(
-          color: AppColors.primaryTextColor,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
-        content: Column(
-          children: [
-            Text("Please contact via manager!"),
-            SizedBox(height: 10),
-            TextButton(
-              child: Text('Okay'),
-              style: TextButton.styleFrom(
-                textStyle: TextStyle(
-                  fontSize: 12,
-                ),
-                primary: Colors.white,
-                backgroundColor: AppColors.primaryColor,
-              ),
-              onPressed: () => Get.back(),
-            ),
-          ],
-        ));
   }
 
   @override

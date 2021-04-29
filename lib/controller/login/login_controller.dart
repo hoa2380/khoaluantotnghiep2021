@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,7 +7,6 @@ import 'package:khoaluantotnghiep2021/data/model/room.dart';
 import 'package:khoaluantotnghiep2021/data/model/user.dart';
 import 'package:khoaluantotnghiep2021/ui/home/home_page.dart';
 import 'package:khoaluantotnghiep2021/ui/theme/app_colors.dart';
-import 'package:connectivity/connectivity.dart';
 
 class LoginController extends GetxController {
   TextEditingController textRoomName, textLabel;

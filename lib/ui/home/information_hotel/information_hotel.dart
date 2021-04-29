@@ -1,9 +1,11 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:khoaluantotnghiep2021/controller/home/infor_hotel/infor_controller.dart';
 import 'package:khoaluantotnghiep2021/utils/app_endpoint.dart';
+
 
 class InformationHotel extends StatefulWidget {
   @override
@@ -15,7 +17,14 @@ class _InformationHotelState extends State<InformationHotel> {
 
   @override
   Widget build(BuildContext context) {
-    return inforActivity();
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialRoute: 'home',
+      routes: {
+        'home': (context) => inforActivity(),
+        'detail': (context) => hotelInforDetail("")
+      },
+    );
   }
 
   Widget inforActivity() {
@@ -70,20 +79,17 @@ class _InformationHotelState extends State<InformationHotel> {
   }
 
   hotelInforDetail(detail) {
-    return Scaffold(
-        body: SafeArea(
-      child: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Image.network(
-                detail,
-                fit: BoxFit.cover,
-              ),
+    return Column(
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            child: Image.network(
+              detail,
+              fit: BoxFit.cover,
             ),
           ),
-        ],
-      ),
-    ));
+        ),
+      ],
+    );
   }
 }

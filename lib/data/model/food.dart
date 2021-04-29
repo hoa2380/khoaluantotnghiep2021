@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
+
 class Food {
   Food({
     this.success,
@@ -14,14 +16,14 @@ class Food {
   String toRawJson() => json.encode(toJson());
 
   factory Food.fromJson(Map<String, dynamic> json) => Food(
-        success: json["success"],
-        data: Data.fromJson(json["data"]),
-      );
+    success: json["success"],
+    data: Data.fromJson(json["data"]),
+  );
 
   Map<String, dynamic> toJson() => {
-        "success": success,
-        "data": data.toJson(),
-      };
+    "success": success,
+    "data": data.toJson(),
+  };
 }
 
 class Data {
@@ -42,22 +44,22 @@ class Data {
   String toRawJson() => json.encode(toJson());
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        page: json["page"],
-        data: List<FoodDatum>.from(
-            json["data"].map((x) => FoodDatum.fromJson(x))),
-        totalPage: json["totalPage"],
-        count: json["count"],
-      );
+    page: json["page"],
+    data: List<FoodDatum>.from(
+        json["data"].map((x) => FoodDatum.fromJson(x))),
+    totalPage: json["totalPage"],
+    count: json["count"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "page": page,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
-        "totalPage": totalPage,
-        "count": count,
-      };
+    "page": page,
+    "data": List<dynamic>.from(data.map((x) => x.toJson())),
+    "totalPage": totalPage,
+    "count": count,
+  };
 }
 
-class FoodDatum {
+class FoodDatum extends GetxController{
   FoodDatum({
     this.id,
     this.name,
@@ -87,6 +89,8 @@ class FoodDatum {
   int priority;
   dynamic sku;
   dynamic prefixCode;
+  var qty = 0.obs;
+  var discount = 0.obs;
 
   factory FoodDatum.fromRawJson(String str) =>
       FoodDatum.fromJson(json.decode(str));
@@ -94,36 +98,36 @@ class FoodDatum {
   String toRawJson() => json.encode(toJson());
 
   factory FoodDatum.fromJson(Map<String, dynamic> json) => FoodDatum(
-        id: json["id"],
-        name: json["name"],
-        englishName: json["englishName"],
-        description: json["description"],
-        imagePath: json["imagePath"],
-        categoryId: json["categoryId"],
-        pricing: json["pricing"],
-        currency: json["currency"],
-        foodUnit: json["foodUnit"],
-        isActive: json["isActive"],
-        priority: json["priority"],
-        sku: json["SKU"],
-        prefixCode: json["prefixCode"],
-      );
+    id: json["id"],
+    name: json["name"],
+    englishName: json["englishName"],
+    description: json["description"],
+    imagePath: json["imagePath"],
+    categoryId: json["categoryId"],
+    pricing: json["pricing"],
+    currency: json["currency"],
+    foodUnit: json["foodUnit"],
+    isActive: json["isActive"],
+    priority: json["priority"],
+    sku: json["SKU"],
+    prefixCode: json["prefixCode"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "englishName": englishName,
-        "description": description,
-        "imagePath": imagePath,
-        "categoryId": categoryId,
-        "pricing": pricing,
-        "currency": currency,
-        "foodUnit": foodUnit,
-        "isActive": isActive,
-        "priority": priority,
-        "SKU": sku,
-        "prefixCode": prefixCode,
-      };
+    "id": id,
+    "name": name,
+    "englishName": englishName,
+    "description": description,
+    "imagePath": imagePath,
+    "categoryId": categoryId,
+    "pricing": pricing,
+    "currency": currency,
+    "foodUnit": foodUnit,
+    "isActive": isActive,
+    "priority": priority,
+    "SKU": sku,
+    "prefixCode": prefixCode,
+  };
 
   @override
   String toString() {

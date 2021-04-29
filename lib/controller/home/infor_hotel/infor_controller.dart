@@ -1,11 +1,5 @@
-import 'package:connectivity/connectivity.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:khoaluantotnghiep2021/controller/home/food_service/food_service_provider.dart';
-import 'package:khoaluantotnghiep2021/data/model/category.dart';
-import 'package:khoaluantotnghiep2021/data/model/food.dart';
 import 'package:khoaluantotnghiep2021/data/model/infor.dart';
-import 'package:khoaluantotnghiep2021/ui/theme/app_colors.dart';
 
 import 'infor_provider.dart';
 
